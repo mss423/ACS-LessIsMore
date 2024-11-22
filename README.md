@@ -1,1 +1,1 @@
-# ACS-LessIsMore
+# Less is More: Adaptive Coverage for Synthetic Training Data
