@@ -1,6 +1,7 @@
 import networkx as nx
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+from vertex_embed import get_embeddings_task
 
 # labels maps i to its label.
 def build_graph(cos_sim, sim_thresh=0.0, max_degree=None, labels=None):

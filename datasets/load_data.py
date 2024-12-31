@@ -15,7 +15,7 @@ def load_train_data(datadir, dataset="sst2", synthetic=False):
 	if dataset == "sst2":
 		path = os.path.join(datadir,"SST2")
 		train_df = pd.read_csv(os.path.join(path,"train.tsv"),sep='\t',header=0)
-		train_df.columns = ['sentence','label']
+		train_df.columns = ['label', 'sentence']
 		return train_df
 	else:
 		raise ValueError('Invalid dataset name passed!')
