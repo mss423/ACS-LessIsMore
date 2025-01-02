@@ -19,8 +19,8 @@ class DataPrecessForSentence(Dataset):
         
     # Convert dataframe to tensor
     def get_input(self, df):
-        sentences = df['s1'].values
-        labels = df['similarity'].values
+        sentences = df['sentence'].values
+        labels = df['label'].values
         
         # tokenizer
         tokens_seq = list(map(self.bert_tokenizer.tokenize, sentences)) # list of shape [sentence_len, token_len]
