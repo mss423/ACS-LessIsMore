@@ -35,11 +35,11 @@ class AlbertModel(nn.Module):
      
         
 class BertModel(nn.Module):
-    def __init__(self, requires_grad = True):
+    def __init__(self, num_labels, requires_grad = True):
         super(BertModel, self).__init__()
         # self.bert = BertForSequenceClassification.from_pretrained('textattack/bert-base-uncased-SST-2',num_labels = 2, hidden_dropout_prob = 0.1, attention_probs_dropout_prob = 0.1)
         # self.tokenizer = AutoTokenizer.from_pretrained('textattack/bert-base-uncased-SST-2', do_lower_case=True)
-        self.bert = BertForSequenceClassification.from_pretrained('google-bert/bert-base-uncased',num_labels = 2, hidden_dropout_prob = 0.1, attention_probs_dropout_prob = 0.1)
+        self.bert = BertForSequenceClassification.from_pretrained('google-bert/bert-base-uncased',num_labels=num_labels, hidden_dropout_prob = 0.1, attention_probs_dropout_prob = 0.1)
         self.tokenizer = AutoTokenizer.from_pretrained('google-bert/bert-base-uncased', do_lower_case=True)
         self.requires_grad = requires_grad
         self.device = torch.device("cuda")

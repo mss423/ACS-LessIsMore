@@ -20,7 +20,7 @@ from sklearn.metrics import (
     f1_score, 
     classification_report)
 
-def train_bert(train_df, dev_df, test_df,
+def train_bert(train_df, dev_df, test_df, num_labels,
          max_seq_len=50,
          epochs=3,
          batch_size=32,
@@ -47,7 +47,7 @@ def train_bert(train_df, dev_df, test_df,
 
     """
 
-    bertmodel = BertModel(requires_grad = True)
+    bertmodel = BertModel(num_labels = num_labels, requires_grad = True)
     tokenizer = bertmodel.tokenizer
     
     print(20 * "=", " Preparing for training ", 20 * "=")

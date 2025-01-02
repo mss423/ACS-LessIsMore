@@ -70,17 +70,20 @@ FEWREL_LABELS = [
 ]
 
 def load_train_data(datadir, dataset="sst2", synthetic=False):
+    '''
+    Returns the training dataframe train_df and number of labels as an int
+    '''
 	fname = "syn-train" if synthetic else "train"
 
 	if dataset == "sst2":
 		path = os.path.join(datadir,"SST2")
 		train_df = pd.read_csv(os.path.join(path, fname+".tsv"),sep='\t',header=0)
 		train_df.columns = ['sentence', 'label']
-		return train_df
+		return train_df, 2 
 	elif dataset == "fewrel":
 		path = os.path.join(datadir,"FewRel")
 		train_df = load_fewrel_data(os.path.join(path, fname+".json"))
-		return train_df
+		return train_df, len(FEWREL_LABELS)
 	else:
 		raise ValueError('Invalid dataset name passed!')
 
