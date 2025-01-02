@@ -79,7 +79,7 @@ def load_train_data(datadir, dataset="sst2", synthetic=False):
 		return train_df
 	elif dataset == "fewrel":
 		path = os.path.join(datadir,"FewRel")
-		train_df = load_fewrel_data(os.path.join(datadir, fname+".json"))
+		train_df = load_fewrel_data(os.path.join(path, fname+".json"))
 		return train_df
 	else:
 		raise ValueError('Invalid dataset name passed!')
@@ -92,7 +92,7 @@ def load_test_data(datadir, dataset="sst2"):
 		return test_df
 	elif dataset == "fewrel":
 		path = os.path.join(datadir,"FewRel")
-		test_df = load_fewrel_data(os.path.join(datadir,"test.json"))
+		test_df = load_fewrel_data(os.path.join(path,"test.json"))
 		return test_df
 	else:
 		raise ValueError('Invalid dataset name passed!')
@@ -114,7 +114,7 @@ def load_fewrel_data(path):
     with open(path) as f:
         raw = json.load(f)
         for label, lst in raw.items():
-            y = LABELS.index(label)
+            y = FEWREL_LABELS.index(label)
             for sample in lst:
                 text, head, tail = read_sample_dict(sample)
                 x = linearize_input(text, head, tail)
@@ -123,5 +123,5 @@ def load_fewrel_data(path):
     df = pd.DataFrame(pairs)
     df.columns = ["sentence", "label"]
     df = df.sample(frac=1)  # Shuffle
-    print(dict(path=path, data=df.shape, unique_labels=len(set(df["labels"].tolist()))))
+    print(dict(path=path, data=df.shape, unique_labels=len(set(df["label"].tolist()))))
     return df
