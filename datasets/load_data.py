@@ -79,8 +79,8 @@ def load_train_data(datadir, dataset="sst2", synthetic=False):
 		return train_df
 	elif dataset == "fewrel":
 		path = os.path.join(datadir,"FewRel")
-		test_df = load_fewrel_data(os.path.join(data_path, fname+".json"))
-		return test_df
+		train_df = load_fewrel_data(os.path.join(datadir, fname+".json"))
+		return train_df
 	else:
 		raise ValueError('Invalid dataset name passed!')
 
@@ -92,7 +92,7 @@ def load_test_data(datadir, dataset="sst2"):
 		return test_df
 	elif dataset == "fewrel":
 		path = os.path.join(datadir,"FewRel")
-		test_df = load_fewrel_data(os.path.join(data_path,"test.json"))
+		test_df = load_fewrel_data(os.path.join(datadir,"test.json"))
 		return test_df
 	else:
 		raise ValueError('Invalid dataset name passed!')
