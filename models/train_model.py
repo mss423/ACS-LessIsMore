@@ -8,6 +8,8 @@ from sys import platform
 from data_precess import DataPrecessForSentence
 from models import BertModel
 
+import numpy as np
+
 import torch
 import torch.nn as nn
 import time
@@ -287,8 +289,6 @@ def validate(model, dataloader):
     epoch_accuracy = running_accuracy / (len(dataloader.dataset))
 
     # DEBUG -- handling multiclass predictions
-    print(all_labels)
-    print(all_prob)
     if len(np.unique(all_labels)) > 2:
         roc_auc = roc_auc_score(all_labels, all_prob, multi_class='ovr')
     else:
