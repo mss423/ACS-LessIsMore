@@ -115,6 +115,7 @@ def train_bert(train_df, dev_df, test_df, num_labels,
     valid_aucs = []
         
      # Compute loss and accuracy before starting (or resuming) training.
+    print("REACHED")
     _, valid_loss, valid_accuracy, auc, _, = validate(model, dev_loader)
     print("\n* Validation loss before training: {:.4f}, accuracy: {:.4f}%, auc: {:.4f}".format(valid_loss, (valid_accuracy*100), auc))
     
