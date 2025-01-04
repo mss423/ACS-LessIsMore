@@ -286,11 +286,13 @@ def validate(model, dataloader):
     epoch_accuracy = running_accuracy / (len(dataloader.dataset))
 
     # DEBUG -- handling multiclass predictions
+    print(all_labels)
+    print(all_prob)
     if len(np.unique(all_labels)) > 2:
         roc_auc = roc_auc_score(all_labels, all_prob, multi_class='ovr')
     else:
         roc_auc = roc_auc_score(all_labels, all_prob)
-        
+
     return epoch_time, epoch_loss, epoch_accuracy, roc_auc, all_prob
 
 
