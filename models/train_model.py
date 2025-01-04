@@ -8,6 +8,9 @@ from sys import platform
 from data_precess import DataPrecessForSentence
 from models import BertModel
 
+from simpletransformers.classification import ClassificationModel
+from simpletransformers.config.model_args import ClassificationArgs
+
 import numpy as np
 
 import torch
@@ -21,6 +24,22 @@ from sklearn.metrics import (
     recall_score, 
     f1_score, 
     classification_report)
+
+def run_bert_train(train_df, test_df, num_labels, epochs=3):
+    data_train = load_data(path_train)
+    data_test = load_data(path_test)
+    print(data_train.sample(10))
+
+    args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True)
+    model = ClassificationModel(
+        "bert", "bert-base-cased", num_labels=num_labels, args=args
+    )
+    model.train_model(data_train)
+    result, model_outputs, wrong_predictions = model.eval_model(data_test)
+
+    pred = model_outputs.argmax(-1).tolist()
+    gold = data_test["labels"].tolist()
+    print(classification_report(gold, pred))
 
 def train_bert(train_df, dev_df, test_df, num_labels,
          max_seq_len=50,
