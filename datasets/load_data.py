@@ -73,7 +73,7 @@ def load_train_data(datadir, dataset="sst2", synthetic=False):
     '''
     Returns the training dataframe train_df and number of labels as an int
     '''
-	fname = "syn-train" if synthetic else "train"
+    fname = "syn-train" if synthetic else "train"
 
 	if dataset == "sst2":
 		path = os.path.join(datadir,"SST2")
