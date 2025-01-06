@@ -38,7 +38,7 @@ def run_bert_train(data_train, data_test, num_labels, epochs=3):
     result, model_outputs, wrong_predictions = model.eval_model(data_test)
 
     pred = model_outputs.argmax(-1).tolist()
-    gold = data_test["labels"].tolist()
+    gold = data_test["label"].tolist()
     print(classification_report(gold, pred))
 
 def train_bert(train_df, dev_df, test_df, num_labels,
