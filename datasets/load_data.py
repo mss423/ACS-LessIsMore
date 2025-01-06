@@ -92,6 +92,7 @@ def load_test_data(datadir, dataset="sst2"):
 		path = os.path.join(datadir,"SST2")
 		test_df = pd.read_csv(os.path.join(path,"test.tsv"),sep='\t',header=0)
 		test_df.columns = ['label','sentence']
+        test_df = test_df[['sentence', 'label']]
 		return test_df
 	elif dataset == "fewrel":
 		path = os.path.join(datadir,"FewRel")
