@@ -88,18 +88,18 @@ def load_train_data(datadir, dataset="sst2", synthetic=False):
         raise ValueError('Invalid dataset name passed!')
 
 def load_test_data(datadir, dataset="sst2"):
-	if dataset == "sst2":
-		path = os.path.join(datadir,"SST2")
-		test_df = pd.read_csv(os.path.join(path,"test.tsv"),sep='\t',header=0)
-		test_df.columns = ['label','sentence']
+    if dataset == "sst2":
+        path = os.path.join(datadir,"SST2")
+        test_df = pd.read_csv(os.path.join(path,"test.tsv"),sep='\t',header=0)
+        test_df.columns = ['label','sentence']
         test_df = test_df[['sentence', 'label']]
-		return test_df
-	elif dataset == "fewrel":
-		path = os.path.join(datadir,"FewRel")
-		test_df = load_fewrel_data(os.path.join(path,"test.json"))
-		return test_df
-	else:
-		raise ValueError('Invalid dataset name passed!')
+        return test_df
+    elif dataset == "fewrel":
+        path = os.path.join(datadir,"FewRel")
+        test_df = load_fewrel_data(os.path.join(path,"test.json"))
+        return test_df
+    else:
+        raise ValueError('Invalid dataset name passed!')
 
 # FewRel Data Functions #
 def linearize_input(text, head, tail):
