@@ -26,8 +26,6 @@ from sklearn.metrics import (
     classification_report)
 
 def run_bert_train(data_train, data_test, num_labels, epochs=3):
-    # data_train = load_data(path_train)
-    # data_test = load_data(path_test)
     print(data_train.sample(10))
 
     args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True)
@@ -39,7 +37,7 @@ def run_bert_train(data_train, data_test, num_labels, epochs=3):
 
     pred = model_outputs.argmax(-1).tolist()
     gold = data_test["label"].tolist()
-    print(classification_report(gold, pred))
+    return classification_report(gold, pred)
 
 def train_bert(train_df, dev_df, test_df, num_labels,
          max_seq_len=50,
