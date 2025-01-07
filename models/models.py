@@ -46,7 +46,7 @@ class BertModel(nn.Module):
         )
         self.tokenizer = AutoTokenizer.from_pretrained('google-bert/bert-base-uncased', do_lower_case=True)
         self.requires_grad = requires_grad
-        self.device = torch.device("cuda" if torch.cude.is_available() else "cpu")
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         for param in self.bert.parameters():
             param.requires_grad = requires_grad  # Each parameter requires gradient
 
