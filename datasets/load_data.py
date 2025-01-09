@@ -87,7 +87,7 @@ def load_train_data(datadir, dataset="sst2", synthetic=False):
     elif dataset == "aste":
         path = os.path.join(datadir,"ASTE/PGDG1.txt")
         train_df = load_aste_sentences(path)
-        return train_df
+        return train_df, 3
     else:
         raise ValueError('Invalid dataset name passed!')
 
@@ -116,9 +116,8 @@ def load_aste_sentences(path):
     with open(path, "r", encoding="utf-8") as f:
         for line in f:
             parts = line.strip().split("#### #### ####")
-            if parts:
-                sentences.append(parts[0])
-                labels.append(parts[1])
+            sentences.append(parts[0])
+            labels.append(parts[1])
     return pd.DataFrame({"sentence": sentences, "label": labels})
 
 
