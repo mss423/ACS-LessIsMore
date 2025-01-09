@@ -1,6 +1,6 @@
 import networkx as nx
 import numpy as np
-import tqdm
+from tqdm import tqdm
 from sklearn.metrics.pairwise import cosine_similarity
 from vertex_embed import get_embeddings_task
 
