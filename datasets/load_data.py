@@ -113,7 +113,7 @@ def load_test_data(datadir, dataset="sst2"):
 def load_aste_sentences(path):
     sentences = []
     labels    = []
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(path, "r", encoding="utf-8") as f:
         for line in f:
             parts = line.strip().split("#### #### ####")
             if parts:
