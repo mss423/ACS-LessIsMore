@@ -1,7 +1,6 @@
 import os
 import pandas as pd
 import json
-from aste_data_utils import Data as aste_data
 
 FEWREL_LABELS = [
     "P1001",
