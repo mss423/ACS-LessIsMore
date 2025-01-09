@@ -25,10 +25,22 @@ from sklearn.metrics import (
     f1_score, 
     classification_report)
 
-def run_bert_train(data_train, data_test, num_labels, epochs=3):
+def train_on_data(data_train, data_test, num_labels, dataset, epochs=3, seed=0):
+    if dataset in ['sst2','fewrel']:
+        return run_bert_train(data_train, data_test, num_labels, seed=seed)
+    elif dataset == 'aste':
+        # todo
+        print("implement!")
+    elif dataset == 'crossner':
+        # todo
+        print("implement!")
+    else:
+        raise ValueError('Invalid dataset name passed!')
+
+def run_bert_train(data_train, data_test, num_labels, epochs=3, seed=0):
     print(data_train.sample(10))
 
-    args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True)
+    args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True, manual_seed=seed)
     model = ClassificationModel(
         "bert", "bert-base-cased", num_labels=num_labels, args=args
     )
@@ -38,6 +50,11 @@ def run_bert_train(data_train, data_test, num_labels, epochs=3):
     pred = model_outputs.argmax(-1).tolist()
     gold = data_test["label"].tolist()
     return classification_report(gold, pred, output_dict=True, zero_division=0.0), accuracy_score(gold, pred)
+
+
+
+
+# ! ------ Defunct ------- ! #
 
 def train_bert(train_df, dev_df, test_df, num_labels,
          max_seq_len=50,

@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import json
+from aste_data_utils import Data as aste_data
 
 FEWREL_LABELS = [
     "P1001",
@@ -84,6 +85,10 @@ def load_train_data(datadir, dataset="sst2", synthetic=False):
         path = os.path.join(datadir,"FewRel")
         train_df = load_fewrel_data(os.path.join(path, fname+".json"))
         return train_df, len(FEWREL_LABELS)
+    elif dataset == "aste":
+        path = os.path.join(datadir,"ASTE/PGDG1.txt")
+        train_df = load_aste_sentences(path)
+        return train_df
     else:
         raise ValueError('Invalid dataset name passed!')
 
@@ -98,10 +103,28 @@ def load_test_data(datadir, dataset="sst2"):
         path = os.path.join(datadir,"FewRel")
         test_df = load_fewrel_data(os.path.join(path,"test.json"))
         return test_df
+    elif dataset == "aste":
+        path = os.path.join(datadir,"ASTE/test.txt")
+        train_df = load_aste_sentences(path)
+        return train_df
     else:
         raise ValueError('Invalid dataset name passed!')
 
-# FewRel Data Functions #
+# ------ ASTE Data Functions ------ #
+def load_aste_sentences(path):
+    sentences = []
+    labels    = []
+    with open(filepath, "r", encoding="utf-8") as f:
+        for line in f:
+            parts = line.strip().split("#### #### ####")
+            if parts:
+                sentences.append(parts[0])
+                labels.append(parts[1])
+    return pd.DataFrame({"sentence": sentences, "label": labels})
+
+
+
+# ------ FewRel Data Functions ------- #
 def linearize_input(text, head, tail):
     return f"Head Entity : {head} , Tail Entity : {tail} , Context : {text}"
 

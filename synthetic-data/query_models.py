@@ -2,7 +2,7 @@ from openai import OpenAI
 import anthropic
 from google.cloud import vertexai
 
-def query_gpt(prompt, model="gpt-3.5-turbo"):
+def query_gpt(context, prompt, model="gpt-3.5-turbo"):
     '''
     prompt: string
     model: string, other examples are "gpt-4o", "gpt-4o-turbo", "gpt-3.5-turbo",
@@ -12,6 +12,10 @@ def query_gpt(prompt, model="gpt-3.5-turbo"):
 
     chat_completion_det = client.chat.completions.create(
         messages = [
+            {
+                "role": "system"
+                "content": context
+            }
             {
                 "role": "user",
                 "content": prompt
@@ -24,7 +28,7 @@ def query_gpt(prompt, model="gpt-3.5-turbo"):
         model=model,
         logprobs = False,
         temperature = 0.9,
-        max_tokens = 1024 # MUST BE MUCH HIGHER TO GENERATE 6000 SAMPLES
+        max_tokens = 2000 # MUST BE MUCH HIGHER TO GENERATE 6000 SAMPLES
     )
     return chat_completion_det.choices[0].message.content
 
