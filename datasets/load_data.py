@@ -111,7 +111,7 @@ def load_test_data(datadir, dataset="sst2"):
         test_df = load_aste_sentences(path)
         return test_df
     elif dataset == "crossner":
-        ath = os.path.join(datadir,"CrossNER/test.txt")
+        path = os.path.join(datadir,"CrossNER/test.txt")
         test_df = load_crossner_sentences(path)
         return test_df
     else:
