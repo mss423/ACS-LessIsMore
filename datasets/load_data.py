@@ -140,12 +140,6 @@ def load_crossner_sentences(path):
 
     return pd.DataFrame({"sentence": sentences})
 
-# Example usage:
-filename = 'your_data.txt'  # Replace with the actual filename
-sentences = extract_sentences(filename)
-
-print(sentences)
-
 
 # ------ ASTE Data Functions ------ #
 def load_aste_sentences(path):
