@@ -91,6 +91,12 @@ def load_train_data(datadir, dataset="sst2", synthetic=False):
     elif dataset == "crossner":
         path = os.path.join(datadir,"CrossNER/" + fname + ".txt")
         train_df = load_crossner_sentences(path)
+
+        if synthetic:
+            dev_path = os.path.join(datadir,"CrossNER/dev.txt")
+            dev_df = load_crossner_sentences(dev_path)
+            train_df = pd.concat([train_df, dev_df], ignore_index=True)
+            
         return train_df, 16
     else:
         raise ValueError('Invalid dataset name passed!')
