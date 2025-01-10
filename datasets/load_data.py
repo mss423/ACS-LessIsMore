@@ -85,9 +85,13 @@ def load_train_data(datadir, dataset="sst2", synthetic=False):
         train_df = load_fewrel_data(os.path.join(path, fname+".json"))
         return train_df, len(FEWREL_LABELS)
     elif dataset == "aste":
-        path = os.path.join(datadir,"ASTE/PGDG1.txt")
+        path = os.path.join(datadir,"ASTE/" + fname + ".txt")
         train_df = load_aste_sentences(path)
         return train_df, 3
+    elif dataset == "crossner":
+        path = os.path.join(datadir,"CrossNER/" + fname + ".txt")
+        train_df = load_crossner_sentences(path)
+        return train_df, 16
     else:
         raise ValueError('Invalid dataset name passed!')
 
@@ -104,10 +108,44 @@ def load_test_data(datadir, dataset="sst2"):
         return test_df
     elif dataset == "aste":
         path = os.path.join(datadir,"ASTE/test.txt")
-        train_df = load_aste_sentences(path)
-        return train_df
+        test_df = load_aste_sentences(path)
+        return test_df
+    elif dataset == "crossner":
+        ath = os.path.join(datadir,"CrossNER/test.txt")
+        test_df = load_crossner_sentences(path)
+        return test_df
     else:
         raise ValueError('Invalid dataset name passed!')
+
+# ------ CrossNER Data Functions ------ #
+def load_crossner_sentences(path):
+    with open(path, 'r') as f:
+        lines = f.readlines()
+
+    sentences = []
+    current_sentence = []
+
+    for line in lines:
+        if line.strip() == '':  # Empty line indicates end of sentence
+            if current_sentence:
+                sentences.append(' '.join(current_sentence))
+                current_sentence = []
+        else:
+            word, _ = line.strip().split()  # Extract word, ignore label
+            current_sentence.append(word)
+
+    # Handle potential last sentence without an empty line
+    if current_sentence:
+        sentences.append(' '.join(current_sentence))
+
+    return pd.DataFrame({"sentence": sentences})
+
+# Example usage:
+filename = 'your_data.txt'  # Replace with the actual filename
+sentences = extract_sentences(filename)
+
+print(sentences)
+
 
 # ------ ASTE Data Functions ------ #
 def load_aste_sentences(path):
@@ -119,7 +157,6 @@ def load_aste_sentences(path):
             sentences.append(parts[0])
             labels.append(parts[1])
     return pd.DataFrame({"sentence": sentences, "label": labels})
-
 
 
 # ------ FewRel Data Functions ------- #

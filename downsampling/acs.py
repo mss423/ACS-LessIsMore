@@ -1,6 +1,6 @@
 import networkx as nx
 import numpy as np
-# from tqdm import tqdm
+from tqdm import tqdm
 from sklearn.metrics.pairwise import cosine_similarity
 from vertex_embed import get_embeddings_task
 
@@ -92,8 +92,8 @@ def acs_sample(data_df, Ks):
     cos_sim     = cosine_similarity(embed_data)
 
     selected_samples = {}
-    for K in Ks:
-        print(f"Processing for K = {K}")
+    for K in tqdm(Ks, desc="Processing Ks..."):
+        # print(f"Processing for K = {K}")
         _, _, selected_samples[K] = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels)
     return selected_samples
 
