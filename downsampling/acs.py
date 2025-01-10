@@ -16,7 +16,7 @@ def build_graph(cos_sim, sim_thresh=0.0, max_degree=None, labels=None):
                 continue
             if max_degree and G.degree(i) >= max_degree:
                 break  # Exit the inner loop if max_degree is reached
-            if similarity >= sim_thresh and labels and labels[i]==labels[j]:
+            if similarity >= sim_thresh:# and labels and labels[i]==labels[j]:
                 G.add_edge(i, j, weight=similarity)
         # add self-loop, doesn't count toward max_degree
         G.add_edge(i, i, weight=1)
@@ -88,12 +88,12 @@ def calculate_similarity_threshold(data, num_samples, coverage, cap=None, epsilo
 def acs_sample(data_df, Ks):
     coverage = 0.9 # Coverage fixed at 0.9
     embed_data  = get_embeddings_task(data_df['sentence'])
-    data_labels = data_df['label'].tolist()
+    # data_labels = data_df['label'].tolist()
     cos_sim     = cosine_similarity(embed_data)
 
     selected_samples = {}
     for K in tqdm(Ks, desc="Processing Ks..."):
         # print(f"Processing for K = {K}")
-        _, _, selected_samples[K] = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels)
+        _, _, selected_samples[K] = calculate_similarity_threshold(cos_sim, K, coverage, labels=[])# data_labels)
     return selected_samples
 
