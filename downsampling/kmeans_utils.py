@@ -19,9 +19,14 @@ def kmeans_sample(data_df, Ks):
 			# get all indices of points assigned to this cluster:
 			cluster_pts_indices = np.where(kmeans.labels_ == iclust)[0]
 
+			# Handle empty clusters
+			if len(cluster_pts_indices) == 0:
+				print(f"Warning: Cluster {iclust} is empty for K={K}. Skipping.")
+                continue
+
 			cluster_cen = kmeans.cluster_centers_[iclust]
 			min_idx = np.argmin([euclidean(embed_data[idx], cluster_cen) for idx in cluster_pts_indices])
 			closest_pt_idx.append(cluster_pts_indices[min_idx])
 		selected_samples[K] = closest_pt_idx
-		
+		print(len(selected_samples[K]))
 	return selected_sample # data_df.iloc[closest_pt_idx]
