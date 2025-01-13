@@ -93,7 +93,6 @@ def acs_sample(data_df, Ks):
 
     selected_samples = {}
     for K in tqdm(Ks, desc="Processing Ks..."):
-        # print(f"Processing for K = {K}")
-        _, _, selected_samples[K] = calculate_similarity_threshold(cos_sim, K, coverage, labels=[])# data_labels)
+        _, _, selected_samples[K] = calculate_similarity_threshold(cos_sim, K, coverage, labels=[]) # data_labels)
     return selected_samples
 
