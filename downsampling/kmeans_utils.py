@@ -21,7 +21,7 @@ def kmeans_sample(data_df, Ks):
 
 			# Handle empty clusters
 			if len(cluster_pts_indices) == 0:
-				print(f"Warning: Cluster {iclust} is empty for K={K}. Skipping.")
+				# print(f"Warning: Cluster {iclust} is empty for K={K}. Skipping.")
 				continue
 
 			cluster_cen = kmeans.cluster_centers_[iclust]
@@ -29,4 +29,4 @@ def kmeans_sample(data_df, Ks):
 			closest_pt_idx.append(cluster_pts_indices[min_idx])
 		selected_samples[K] = closest_pt_idx
 		print(len(selected_samples[K]))
-	return selected_sample # data_df.iloc[closest_pt_idx]
+	return selected_samples # data_df.iloc[closest_pt_idx]
