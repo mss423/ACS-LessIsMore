@@ -2,6 +2,7 @@ from sklearn.cluster import KMeans
 from scipy.spatial.distance import euclidean
 import numpy as np
 import pandas as pd
+from vertex_embed import get_embeddings_task
 
 def kmeans_sample(data_df, Ks):
 	embed_data = get_embeddings_task(data_df['sentence'])
