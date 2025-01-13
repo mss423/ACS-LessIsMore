@@ -3,6 +3,7 @@ from scipy.spatial.distance import euclidean
 import numpy as np
 import pandas as pd
 from vertex_embed import get_embeddings_task
+from tqdm import tqdm
 
 def kmeans_sample(data_df, Ks):
 	embed_data = get_embeddings_task(data_df['sentence'])
