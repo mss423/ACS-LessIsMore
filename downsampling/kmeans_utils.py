@@ -28,5 +28,5 @@ def kmeans_sample(data_df, Ks):
 			min_idx = np.argmin([euclidean(embed_data[idx], cluster_cen) for idx in cluster_pts_indices])
 			closest_pt_idx.append(cluster_pts_indices[min_idx])
 		selected_samples[K] = closest_pt_idx
-		print(len(selected_samples[K]))
+		# print(len(selected_samples[K]))
 	return selected_samples # data_df.iloc[closest_pt_idx]
