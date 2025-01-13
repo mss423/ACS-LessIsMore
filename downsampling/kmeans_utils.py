@@ -22,7 +22,7 @@ def kmeans_sample(data_df, Ks):
 			# Handle empty clusters
 			if len(cluster_pts_indices) == 0:
 				print(f"Warning: Cluster {iclust} is empty for K={K}. Skipping.")
-                continue
+				continue
 
 			cluster_cen = kmeans.cluster_centers_[iclust]
 			min_idx = np.argmin([euclidean(embed_data[idx], cluster_cen) for idx in cluster_pts_indices])
