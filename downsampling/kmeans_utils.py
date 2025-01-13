@@ -16,9 +16,6 @@ def kmeans_sample(data_df, Ks):
 		# Loop over all clusters and find index of closest point to the cluster center and append to closest_pt_idx list.
 		closest_pt_idx = []
 		for iclust in range(kmeans.n_clusters):
-			# get all points assigned to each cluster:
-			cluster_pts = embed_data[kmeans.labels_ == iclust]
-
 			# get all indices of points assigned to this cluster:
 			cluster_pts_indices = np.where(kmeans.labels_ == iclust)[0]
 
