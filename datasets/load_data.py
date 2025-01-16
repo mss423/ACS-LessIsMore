@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 import json
+from transformers import AutoTokenizer
+auto_tokenizer = AutoTokenizer.from_pretrained(params.model_name)
 
 FEWREL_LABELS = [
     "P1001",
@@ -68,6 +70,14 @@ FEWREL_LABELS = [
     "P974",
     "P991",
 ]
+politics_labels = ['O', 'B-country', 'B-politician', 'I-politician', 'B-election', 'I-election', 'B-person', 'I-person', 'B-organisation', 'I-organisation', 'B-location', 'B-misc', 'I-location', 'I-country', 'I-misc', 'B-politicalparty', 'I-politicalparty', 'B-event', 'I-event']
+science_labels = ['O', 'B-scientist', 'I-scientist', 'B-person', 'I-person', 'B-university', 'I-university', 'B-organisation', 'I-organisation', 'B-country', 'I-country', 'B-location', 'I-location', 'B-discipline', 'I-discipline', 'B-enzyme', 'I-enzyme', 'B-protein', 'I-protein', 'B-chemicalelement', 'I-chemicalelement', 'B-chemicalcompound', 'I-chemicalcompound', 'B-astronomicalobject', 'I-astronomicalobject', 'B-academicjournal', 'I-academicjournal', 'B-event', 'I-event', 'B-theory', 'I-theory', 'B-award', 'I-award', 'B-misc', 'I-misc']
+music_labels = ['O', 'B-musicgenre', 'I-musicgenre', 'B-song', 'I-song', 'B-band', 'I-band', 'B-album', 'I-album', 'B-musicalartist', 'I-musicalartist', 'B-musicalinstrument', 'I-musicalinstrument', 'B-award', 'I-award', 'B-event', 'I-event', 'B-country', 'I-country', 'B-location', 'I-location', 'B-organisation', 'I-organisation', 'B-person', 'I-person', 'B-misc', 'I-misc']
+literature_labels = ["O", "B-book", "I-book", "B-writer", "I-writer", "B-award", "I-award", "B-poem", "I-poem", "B-event", "I-event", "B-magazine", "I-magazine", "B-literarygenre", "I-literarygenre", 'B-country', 'I-country', "B-person", "I-person", "B-location", "I-location", 'B-organisation', 'I-organisation', 'B-misc', 'I-misc']
+ai_labels = ["O", "B-field", "I-field", "B-task", "I-task", "B-product", "I-product", "B-algorithm", "I-algorithm", "B-researcher", "I-researcher", "B-metrics", "I-metrics", "B-programlang", "I-programlang", "B-conference", "I-conference", "B-university", "I-university", "B-country", "I-country", "B-person", "I-person", "B-organisation", "I-organisation", "B-location", "I-location", "B-misc", "I-misc"]
+
+domain2labels = {"politics": politics_labels, "science": science_labels, "music": music_labels, "literature": literature_labels, "ai": ai_labels}
+
 
 def load_train_data(datadir, dataset="sst2", synthetic=False):
     '''
@@ -145,6 +155,34 @@ def load_crossner_sentences(path):
         sentences.append(' '.join(current_sentence))
 
     return pd.DataFrame({"sentence": sentences})
+
+def read_ner(datapath, tgt_dm):
+    inputs, labels = [], []
+    with open(datapath, "r") as fr:
+        token_list, label_list = [], []
+        for i, line in enumerate(fr):
+            line = line.strip()
+            if line == "":
+                if len(token_list) > 0:
+                    assert len(token_list) == len(label_list)
+                    inputs.append([auto_tokenizer.cls_token_id] + token_list + [auto_tokenizer.sep_token_id])
+                    labels.append([pad_token_label_id] + label_list + [pad_token_label_id])
+                
+                token_list, label_list = [], []
+                continue
+            
+            splits = line.split("\t")
+            token = splits[0]
+            label = splits[1]
+
+            subs_ = auto_tokenizer.tokenize(token)
+            if len(subs_) > 0:
+                label_list.extend([domain2labels[tgt_dm].index(label)] + [pad_token_label_id] * (len(subs_) - 1))
+                token_list.extend(auto_tokenizer.convert_tokens_to_ids(subs_))
+            else:
+                print("length of subwords for %s is zero; its label is %s" % (token, label))
+
+    return inputs, labels
 
 
 # ------ ASTE Data Functions ------ #
