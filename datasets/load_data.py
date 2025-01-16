@@ -154,12 +154,14 @@ def load_crossner_sentences(path):
 
     return pd.DataFrame({"sentence": sentences})
 
-def load_crossner_train(path):
+def load_crossner_train(path, dev=False):
     with open(path, 'r') as f:
         lines = f.readlines()
 
     data = []
     sentence_id = 0
+    if dev: 
+        sentence_id += 2700
 
     for line in lines:
         if line.strip() == '':  # Empty line indicates end of sentence
