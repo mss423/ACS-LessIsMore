@@ -1,10 +1,6 @@
 import os
 import pandas as pd
 import json
-from src.config import get_params
-params = get_params()
-from transformers import AutoTokenizer
-auto_tokenizer = AutoTokenizer.from_pretrained(params.model_name)
 
 FEWREL_LABELS = [
     "P1001",
@@ -158,33 +154,20 @@ def load_crossner_sentences(path):
 
     return pd.DataFrame({"sentence": sentences})
 
-def read_ner(datapath, tgt_dm):
-    inputs, labels = [], []
-    with open(datapath, "r") as fr:
-        token_list, label_list = [], []
-        for i, line in enumerate(fr):
-            line = line.strip()
-            if line == "":
-                if len(token_list) > 0:
-                    assert len(token_list) == len(label_list)
-                    inputs.append([auto_tokenizer.cls_token_id] + token_list + [auto_tokenizer.sep_token_id])
-                    labels.append([pad_token_label_id] + label_list + [pad_token_label_id])
-                
-                token_list, label_list = [], []
-                continue
-            
-            splits = line.split("\t")
-            token = splits[0]
-            label = splits[1]
+def load_crossner_train(path):
+    with open(path, 'r') as f:
+        lines = f.readlines()
 
-            subs_ = auto_tokenizer.tokenize(token)
-            if len(subs_) > 0:
-                label_list.extend([domain2labels[tgt_dm].index(label)] + [pad_token_label_id] * (len(subs_) - 1))
-                token_list.extend(auto_tokenizer.convert_tokens_to_ids(subs_))
-            else:
-                print("length of subwords for %s is zero; its label is %s" % (token, label))
+    data = []
+    sentence_id = 0
 
-    return inputs, labels
+    for line in lines:
+        if line.strip() == '':  # Empty line indicates end of sentence
+            sentence_id += 1
+        else:
+            token, label = line.strip().split()  # Extract word, ignore label
+            data.append([sentence_id, token, label])
+    return data
 
 
 # ------ ASTE Data Functions ------ #
