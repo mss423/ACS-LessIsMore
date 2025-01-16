@@ -67,8 +67,9 @@ def run_ner_train(data_train, data_test, epochs=3, seed=0):
     model.train_model(data_train)
     result, model_outputs, wrong_preds = model.eval_model(data_test)
 
-    print(wrong_preds)
-    pred = model_outputs.argmax(-1).tolist()
-    gold = data_test["label"].tolist()
-    return classification_report(gold, pred, output_dict=True, zero_division=0.0), accuracy_score(gold, pred)
+    return result
+    # print(wrong_preds)
+    # pred = model_outputs.argmax(-1).tolist()
+    # gold = data_test["label"].tolist()
+    # return classification_report(gold, pred, output_dict=True, zero_division=0.0), accuracy_score(gold, pred)
 
