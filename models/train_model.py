@@ -56,7 +56,7 @@ def run_ner_train(data_train, data_test, epochs=3, seed=0):
     custom_labels = ["O", "B-algorithm", "I-algorithm", "B-conference", "I-conference", \
         "B-country", "I-country", "B-field", "I-field", "B-metrics", "I-metrics", \
         "B-misc", "I-misc", "B-organisation", "I-organisation", "B-person", "I-person", \
-        "B-product", "I-product", "B-programming_language", "I-programming_language", \
+        "B-product", "I-product", "B-programlang", "I-programlang", \
         "B-researcher", "I-researcher", "B-task", "I-task", "B-university", "I-university"]
 
     args = NERArgs(labels_list=custom_labels, num_train_epochs=epochs, overwrite_output_dir=True, manual_seed=seed)
