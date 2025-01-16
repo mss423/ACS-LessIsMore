@@ -10,7 +10,7 @@ from models import BertModel
 
 from simpletransformers.classification import ClassificationModel
 from simpletransformers.config.model_args import ClassificationArgs
-from simpletransformers.ner import NERModel
+from simpletransformers.ner import NERArgs, NERModel
 
 import numpy as np
 
