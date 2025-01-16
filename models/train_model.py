@@ -61,8 +61,11 @@ def run_ner_train(data_train, data_test, epochs=3, seed=0):
        'I-misc', 'B-task', 'I-task', 'I-product', 'I-organisation',
        'I-programlang']
 
-    args = NERArgs(labels_list=custom_labels, num_train_epochs=epochs, overwrite_output_dir=True, manual_seed=seed)
-    args.labels_list = custom_labels
+    args = NERArgs(labels_list=custom_labels, 
+        num_train_epochs=epochs, 
+        overwrite_output_dir=True, 
+        manual_seed=seed,
+        early_stopping_consider_epochs=True)
     model = NERModel("bert", "bert-base-cased", args=args)
     model.train_model(data_train)
     result, model_outputs, wrong_preds = model.eval_model(data_test)
