@@ -61,7 +61,7 @@ def run_ner_train(data_train, data_test, epochs=3, seed=0):
 
     args = NERArgs(labels_list=custom_labels, num_train_epochs=epochs, overwrite_output_dir=True, manual_seed=seed)
     args.labels_list = custom_labels
-    model = NERModel("bert", "bert-cased-base", args=model_args)
+    model = NERModel("bert", "bert-cased-base", args=args)
     model.train_model(data_train)
     result, model_outputs, wrong_preds = model.eval_model(data_test)
 
