@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 import json
+from src.config import get_params
+params = get_params()
 from transformers import AutoTokenizer
 auto_tokenizer = AutoTokenizer.from_pretrained(params.model_name)
 
