@@ -53,11 +53,13 @@ def run_bert_train(data_train, data_test, num_labels, epochs=3, seed=0):
     return classification_report(gold, pred, output_dict=True, zero_division=0.0), accuracy_score(gold, pred)
 
 def run_ner_train(data_train, data_test, epochs=3, seed=0):
-    custom_labels = ["O", "B-algorithm", "I-algorithm", "B-conference", "I-conference", \
-        "B-country", "I-country", "B-field", "I-field", "B-metrics", "I-metrics", \
-        "B-misc", "I-misc", "B-organisation", "I-organisation", "B-person", "I-person", \
-        "B-product", "I-product", "B-programlang", "I-programlang", \
-        "B-researcher", "I-researcher", "B-task", "I-task", "B-university", "I-university"]
+    custom_labels = ['B-researcher', 'I-researcher', 'O', 'B-product', 'B-algorithm',
+       'I-algorithm', 'B-conference', 'I-conference', 'B-field',
+       'I-field', 'B-metrics', 'B-location', 'I-location', 'B-country',
+       'I-metrics', 'I-country', 'B-person', 'I-person', 'B-programlang',
+       'B-organisation', 'B-university', 'I-university', 'B-misc',
+       'I-misc', 'B-task', 'I-task', 'I-product', 'I-organisation',
+       'I-programlang']
 
     args = NERArgs(labels_list=custom_labels, num_train_epochs=epochs, overwrite_output_dir=True, manual_seed=seed)
     args.labels_list = custom_labels
