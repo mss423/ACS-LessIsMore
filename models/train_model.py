@@ -65,10 +65,11 @@ def run_ner_train(data_train, data_test, epochs=3, seed=0):
         num_train_epochs=epochs, 
         overwrite_output_dir=True, 
         manual_seed=seed)
-    args.use_early_stopping = True
-    args.early_stopping_delta = 0.001
-    args.early_stopping_patience = 3
-    args.evaluate_during_training_steps = 100
+    args.no_save = True
+    # args.use_early_stopping = True
+    # args.early_stopping_delta = 0.001
+    # args.early_stopping_patience = 3
+    # args.evaluate_during_training_steps = 100
 
     model = NERModel("bert", "bert-base-cased", args=args)
     model.train_model(data_train)
