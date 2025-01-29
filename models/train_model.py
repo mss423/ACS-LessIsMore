@@ -44,7 +44,8 @@ def run_bert_train(data_train, data_test, num_labels, epochs=3, seed=0):
     args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True, 
         manual_seed=seed,
         save_steps=-1,
-        save_model_every_epoch=False)
+        save_model_every_epoch=False,
+        no_save=True)
 
     model = ClassificationModel(
         "bert", "bert-base-cased", num_labels=num_labels, args=args
