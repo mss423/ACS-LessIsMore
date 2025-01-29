@@ -41,10 +41,11 @@ def train_on_data(data_train, data_test, num_labels, dataset, epochs=3, seed=0):
 def run_bert_train(data_train, data_test, num_labels, epochs=3, seed=0):
     # print(data_train.sample(10))
 
-    args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True, manual_seed=seed)
-    args["save_steps"] = -1
-    args["save_model_every_epoch"] = False
-    
+    args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True, 
+        manual_seed=seed,
+        save_steps=-1,
+        save_model_every_epoch=False)
+
     model = ClassificationModel(
         "bert", "bert-base-cased", num_labels=num_labels, args=args
     )
