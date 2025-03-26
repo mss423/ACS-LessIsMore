@@ -5,8 +5,8 @@ import time
 from vertexai.language_models import TextEmbeddingModel, TextEmbeddingInput
 from tqdm import tqdm
 
-LOCATION = ""
-PROJECT_ID = ""
+LOCATION = "us-central1"
+PROJECT_ID = "synthetic-data-432701"
 
 def get_embeddings_wrapper(texts, model, BATCH_SIZE=16):
     embs = []
