@@ -29,12 +29,8 @@ from sklearn.metrics import (
 def train_on_data(data_train, data_test, num_labels, dataset, epochs=3, seed=0):
     if dataset in ['sst2','fewrel']:
         return run_bert_train(data_train, data_test, num_labels, seed=seed)
-    elif dataset == 'aste':
-        # todo
-        print("implement!")
     elif dataset == 'crossner':
-        # todo
-        print("implement!")
+        run_ner_train(data_train, data_test, epochs=epochs, seed=seed)
     else:
         raise ValueError('Invalid dataset name passed!')
 
@@ -43,8 +39,6 @@ def run_bert_train(data_train, data_test, num_labels, epochs=3, seed=0):
 
     args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True, 
         manual_seed=seed,
-        save_steps=-1,
-        save_model_every_epoch=False,
         no_save=True)
 
     model = ClassificationModel(
@@ -71,18 +65,10 @@ def run_ner_train(data_train, data_test, epochs=3, seed=0):
         overwrite_output_dir=True, 
         manual_seed=seed)
     args.no_save = True
-    # args.use_early_stopping = True
-    # args.early_stopping_delta = 0.001
-    # args.early_stopping_patience = 3
-    # args.evaluate_during_training_steps = 100
 
     model = NERModel("bert", "bert-base-cased", args=args)
     model.train_model(data_train)
     result, model_outputs, wrong_preds = model.eval_model(data_test)
 
     return result
-    # print(wrong_preds)
-    # pred = model_outputs.argmax(-1).tolist()
-    # gold = data_test["label"].tolist()
-    # return classification_report(gold, pred, output_dict=True, zero_division=0.0), accuracy_score(gold, pred)
 

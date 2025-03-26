@@ -33,7 +33,6 @@ def max_cover_sampling(graph, k):
         break
       max_cover_node = max([node for node in nodes if node not in covered_nodes], key=lambda n: len(set(graph.neighbors(n)) - covered_nodes))
       selected_nodes.add(max_cover_node)
-      # covered_nodes.add(max_cover_node)
       covered_nodes.update(graph.neighbors(max_cover_node))
 
       # Remove neighbors of selected node
@@ -66,7 +65,8 @@ def calculate_similarity_threshold(data, num_samples, coverage, cap=None, epsilo
     # cannot achieve the coverage with sim_lower, then return the samples.
     sim = (sim_upper + sim_lower) / 2
     # node_graph = build_graph(data, sim / 1000, labels=labels
-    cap = (2 * total_num * coverage) / num_samples
+    if not cap:
+        cap = (2 * total_num * coverage) / num_samples
     while abs(current_coverage - coverage) > epsilon and sim_upper - sim_lower > 1:
         if count >= max_run:
             print(f"Reached max number of iterations ({max_run}). Breaking...")
@@ -82,10 +82,9 @@ def calculate_similarity_threshold(data, num_samples, coverage, cap=None, epsilo
         else:
             sim_lower = sim
         sim = (sim_upper + sim_lower) / 2
-    # print(f"Converged to tau = {sim/1000}")
     return sim / 1000, node_graph, samples
 
-def acs_sample(data_df, Ks):
+def acs_sample(data_df, Ks, cap=None, sims=None):
     coverage = 0.9 # Coverage fixed at 0.9
     embed_data  = get_embeddings_task(data_df['sentence'])
     data_labels = data_df['label'].tolist()
@@ -93,6 +92,6 @@ def acs_sample(data_df, Ks):
 
     selected_samples = {}
     for K in tqdm(Ks, desc="Processing Ks..."):
-        _, _, selected_samples[K] = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels)
+        _, _, selected_samples[K] = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels, cap=cap, sims=sims)
     return selected_samples
 
