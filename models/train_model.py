@@ -2,8 +2,7 @@ import os
 import pandas as pd
 from torch.utils.data import DataLoader, SequentialSampler
 from transformers import get_linear_schedule_with_warmup
-# from transformers.optimization import AdamW
-from transformers import AdamW
+# from transformers import AdamW
 from sys import platform
 
 from data_precess import DataPrecessForSentence
