@@ -22,6 +22,38 @@ def build_graph(cos_sim, sim_thresh=0.0, max_degree=None, labels=None):
         G.add_edge(i, i, weight=1)
     return G
 
+def build_graph_cap(cos_sim, sim_thresh=0.0, max_degree=None, labels=None):
+    """
+    Builds a graph from cosine similarity matrix, keeping only the edges of highest similarity up to max_degree.
+
+    Args:
+        cos_sim: A 2D list or numpy array representing the cosine similarity matrix.
+        sim_thresh: Minimum similarity threshold for edge creation.
+        max_degree: Maximum degree of a node. If provided, keeps only the highest similarity edges.
+        labels: A list of labels for each node. If provided, only creates edges between nodes with the same label.
+
+    Returns:
+        A networkx Graph object.
+    """
+    G = nx.Graph()
+    for i in range(len(cos_sim)):
+        G.add_node(i)
+        # Sort neighbors by similarity in descending order
+        neighbors = sorted(enumerate(cos_sim[i]), key=lambda x: x[1], reverse=True)
+        
+        added_edges = 0 # Counter for edges added for node i
+        for j, similarity in neighbors:
+            if j == i:
+                continue
+            if max_degree and added_edges >= max_degree:
+                break  # Exit the inner loop if max_degree is reached
+            if similarity >= sim_thresh and (labels is None or labels[i] == labels[j]):
+                G.add_edge(i, j, weight=similarity)
+                added_edges += 1
+        # add self-loop, doesn't count toward max_degree
+        G.add_edge(i, i, weight=1)
+    return G
+
 # Graph sampling algorithms (max-cover)
 def max_cover_sampling(graph, k):
     nodes = list(graph.nodes())
@@ -51,7 +83,8 @@ def calculate_similarity_threshold(data, num_samples, coverage, cap=None, epsilo
         epsilon = 5 * 10 / total_num  # Dynamic epsilon
 
     if coverage < num_samples / total_num:
-        node_graph = build_graph(data, 1)
+        # node_graph = build_graph(data, 1)
+        node_graph = build_graph_cap(data, 1)   
         samples, rem_nodes = max_cover_sampling(node_graph, num_samples)
         return 1, node_graph, samples
     # using an integer for sim threhsold avoids lots of floating drama!
@@ -73,7 +106,8 @@ def calculate_similarity_threshold(data, num_samples, coverage, cap=None, epsilo
             break
         count += 1
 
-        node_graph = build_graph(data, sim / 1000, max_degree=cap, labels=labels)
+        # node_graph = build_graph(data, sim / 1000, max_degree=cap, labels=labels)
+        node_graph = build_graph_cap(data, sim / 1000, max_degree=cap, labels=labels)
         samples, rem_nodes = max_cover_sampling(node_graph, num_samples)
         current_coverage = (total_num - rem_nodes) / total_num
 
