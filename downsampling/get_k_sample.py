@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from acs import *
-import kmeans_sample
+from kmeans_utils import *
 
 
 def get_k_sample(K, dataset="SST2", synthetic=False, method="random"):
