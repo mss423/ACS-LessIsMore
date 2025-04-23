@@ -32,7 +32,16 @@ def get_k_sample(K, dataset="SST2", synthetic=False, method="random"):
 			data_df = pd.read_csv(os.path.join(data_path, "train.tsv"), sep='\t')
 			sub_df  = kmeans_sample(data_df, K)
 			sub_df.to_csv(os.path.join(data_path,sub_file), sep='\t')
-			
+
+	elif method == "entropy":
+			try:
+			sub_df  = pd.read_csv(os.path.join(data_path, sub_file), sep='\t')
+			print("Subsample exists, loading ...")
+		except:
+			print("Running downsamping ...")
+			data_df = pd.read_csv(os.path.join(data_path, "train.tsv"), sep='\t')
+			sub_df  = entropy_sample(data_df, K)
+			sub_df.to_csv(os.path.join(data_path,sub_file), sep='\t')
 
 	elif method == "acs":
 		try:

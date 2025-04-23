@@ -116,7 +116,7 @@ def calculate_similarity_threshold(data, num_samples, coverage, cap=None, epsilo
         else:
             sim_lower = sim
         sim = (sim_upper + sim_lower) / 2
-    return sim / 1000, node_graph, samples
+    return sim / 1000, node_graph, samples, current_coverage
 
 def acs_sample(data_df, Ks, cap=None, sims=None):
     coverage = 0.9 # Coverage fixed at 0.9
@@ -126,6 +126,7 @@ def acs_sample(data_df, Ks, cap=None, sims=None):
 
     selected_samples = {}
     for K in tqdm(Ks, desc="Processing Ks..."):
-        _, _, selected_samples[K] = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels, cap=cap, sims=sims)
+        _, _, selected_samples[K], cur_cover = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels, cap=cap, sims=sims)
+        print(f"Finished with effective coverage = {cur_cover}")
     return selected_samples
 
