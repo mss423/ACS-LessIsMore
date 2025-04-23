@@ -4,8 +4,8 @@ from acs import *
 from kmeans_utils import *
 
 
-def get_k_sample(K, dataset="SST2", synthetic=False, method="random"):
-	data_path  = "" + dataset
+def get_k_sample(K, datapath, dataset="SST2", synthetic=False, method="random"):
+	data_path  = os.path.join(datapath, dataset)
 	syn_pre    = "syn" if synthetic else "human"
 	sub_file   = method + "_" + syn_pre + f"_K{K}.tsv"
 
