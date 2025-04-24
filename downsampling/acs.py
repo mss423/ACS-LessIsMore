@@ -133,6 +133,6 @@ def acs_sample(data_df, cos_sim, Ks, cap=None, sims=[707,1000], coverage=0.9):
     for K in tqdm(Ks, desc="Processing Ks..."):
         _, _, selected_samples[int(K)], eff_covers[int(K)] = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels, cap=cap, sims=sims)
         # eff_covers.append(cur_cover)
-        print(f"\nFinished with effective coverage = {cur_cover}")
+        print(f"\nFinished with effective coverage = {eff_covers[int(K)]}")
     return selected_samples, eff_covers
 
