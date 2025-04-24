@@ -129,10 +129,10 @@ def acs_sample(data_df, cos_sim, Ks, cap=None, sims=[707,1000], coverage=0.9):
     # cos_sim     = cosine_similarity(data_df['embeddings'])
 
     selected_samples = {}
-    eff_covers = []
+    eff_covers = {}
     for K in tqdm(Ks, desc="Processing Ks..."):
-        _, _, selected_samples[int(K)], cur_cover = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels, cap=cap, sims=sims)
-        eff_covers.append(cur_cover)
+        _, _, selected_samples[int(K)], eff_covers[int(K)] = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels, cap=cap, sims=sims)
+        # eff_covers.append(cur_cover)
         print(f"\nFinished with effective coverage = {cur_cover}")
     return selected_samples, eff_covers
 
