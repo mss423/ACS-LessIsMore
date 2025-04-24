@@ -25,7 +25,6 @@ def get_embeddings_task(texts, task='CLUSTERING', BATCH_SIZE=16):
     model = TextEmbeddingModel.from_pretrained("text-embedding-004")
 
     embs = []
-    BATCH_SIZE = 16 # set batch size to the limit
     for i in tqdm(range(0, len(texts), BATCH_SIZE)):
         inputs = [TextEmbeddingInput(text, task) for text in texts[i : i + BATCH_SIZE]]
         batch_embs = model.get_embeddings(inputs)

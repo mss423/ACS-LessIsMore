@@ -5,22 +5,22 @@ from sklearn.metrics.pairwise import cosine_similarity
 from vertex_embed import get_embeddings_task
 
 # labels maps i to its label.
-def build_graph(cos_sim, sim_thresh=0.0, max_degree=None, labels=None):
-    G = nx.Graph()
-    for i in range(len(cos_sim)):
-        G.add_node(i)
-        # Sort neighbors by similarity in descending order
-        neighbors = sorted(enumerate(cos_sim[i]), key=lambda x: x[1], reverse=True)
-        for j, similarity in neighbors:
-            if j == i:
-                continue
-            if max_degree and G.degree(i) >= max_degree:
-                break  # Exit the inner loop if max_degree is reached
-            if similarity >= sim_thresh and labels and labels[i]==labels[j]:
-                G.add_edge(i, j, weight=similarity)
-        # add self-loop, doesn't count toward max_degree
-        G.add_edge(i, i, weight=1)
-    return G
+# def build_graph(cos_sim, sim_thresh=0.0, max_degree=None, labels=None):
+#     G = nx.Graph()
+#     for i in range(len(cos_sim)):
+#         G.add_node(i)
+#         # Sort neighbors by similarity in descending order
+#         neighbors = sorted(enumerate(cos_sim[i]), key=lambda x: x[1], reverse=True)
+#         for j, similarity in neighbors:
+#             if j == i:
+#                 continue
+#             if max_degree and G.degree(i) >= max_degree:
+#                 break  # Exit the inner loop if max_degree is reached
+#             if similarity >= sim_thresh and labels and labels[i]==labels[j]:
+#                 G.add_edge(i, j, weight=similarity)
+#         # add self-loop, doesn't count toward max_degree
+#         G.add_edge(i, i, weight=1)
+#     return G
 
 def build_graph_cap(cos_sim, sim_thresh=0.0, max_degree=None, labels=None):
     """
@@ -122,15 +122,17 @@ def calculate_similarity_threshold(data, num_samples, coverage, cap=None, epsilo
         sim = (sim_upper + sim_lower) / 2
     return sim / 1000, node_graph, samples, current_coverage
 
-def acs_sample(data_df, Ks, cap=None, sims=None):
-    coverage = 0.9 # Coverage fixed at 0.9
-    embed_data  = get_embeddings_task(data_df['sentence'])
+def acs_sample(data_df, Ks, cap=None, sims=[707,1000], coverage=0.9):
+    coverage = coverage # Coverage fixed at 0.9
+    # embed_data  = get_embeddings_task(data_df['sentence'])
     data_labels = data_df['label'].tolist()
-    cos_sim     = cosine_similarity(embed_data)
+    cos_sim     = cosine_similarity(data_df['embeddings'])
 
     selected_samples = {}
+    eff_covers = []
     for K in tqdm(Ks, desc="Processing Ks..."):
-        _, _, selected_samples[K], cur_cover = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels, cap=cap, sims=sims)
-        print(f"Finished with effective coverage = {cur_cover}")
-    return selected_samples
+        _, _, selected_samples[int(K)], cur_cover = calculate_similarity_threshold(cos_sim, K, coverage, labels=data_labels, cap=cap, sims=sims)
+        eff_covers.append(cur_cover)
+        print(f"\nFinished with effective coverage = {cur_cover}")
+    return selected_samples, eff_covers
 
