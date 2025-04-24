@@ -122,11 +122,11 @@ def calculate_similarity_threshold(data, num_samples, coverage, cap=None, epsilo
         sim = (sim_upper + sim_lower) / 2
     return sim / 1000, node_graph, samples, current_coverage
 
-def acs_sample(data_df, Ks, cap=None, sims=[707,1000], coverage=0.9):
+def acs_sample(data_df, cos_sim, Ks, cap=None, sims=[707,1000], coverage=0.9):
     coverage = coverage # Coverage fixed at 0.9
     # embed_data  = get_embeddings_task(data_df['sentence'])
     data_labels = data_df['label'].tolist()
-    cos_sim     = cosine_similarity(data_df['embeddings'])
+    # cos_sim     = cosine_similarity(data_df['embeddings'])
 
     selected_samples = {}
     eff_covers = []
