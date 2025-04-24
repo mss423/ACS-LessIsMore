@@ -4,24 +4,6 @@ from tqdm import tqdm
 from sklearn.metrics.pairwise import cosine_similarity
 from vertex_embed import get_embeddings_task
 
-# labels maps i to its label.
-# def build_graph(cos_sim, sim_thresh=0.0, max_degree=None, labels=None):
-#     G = nx.Graph()
-#     for i in range(len(cos_sim)):
-#         G.add_node(i)
-#         # Sort neighbors by similarity in descending order
-#         neighbors = sorted(enumerate(cos_sim[i]), key=lambda x: x[1], reverse=True)
-#         for j, similarity in neighbors:
-#             if j == i:
-#                 continue
-#             if max_degree and G.degree(i) >= max_degree:
-#                 break  # Exit the inner loop if max_degree is reached
-#             if similarity >= sim_thresh and labels and labels[i]==labels[j]:
-#                 G.add_edge(i, j, weight=similarity)
-#         # add self-loop, doesn't count toward max_degree
-#         G.add_edge(i, i, weight=1)
-#     return G
-
 def build_graph_cap(cos_sim, sim_thresh=0.0, max_degree=None, labels=None):
     """
     Builds a graph from cosine similarity matrix, keeping only the edges of highest similarity up to max_degree.
@@ -86,7 +68,7 @@ def calculate_similarity_threshold(data, num_samples, coverage, cap=None, epsilo
         # node_graph = build_graph(data, 1)
         node_graph = build_graph_cap(data, 1)   
         samples, rem_nodes = max_cover_sampling(node_graph, num_samples)
-        return 1, node_graph, samples
+        return 1, node_graph, samples, 0
     # using an integer for sim threhsold avoids lots of floating drama!
     if sims:
         sim_upper = sims[1]
