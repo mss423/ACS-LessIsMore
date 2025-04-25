@@ -68,7 +68,7 @@ def calculate_similarity_threshold(data, num_samples, coverage, cap=None, epsilo
         # node_graph = build_graph(data, 1)
         node_graph = build_graph_cap(data, 1)   
         samples, rem_nodes = max_cover_sampling(node_graph, num_samples)
-        return 1, node_graph, samples, 0
+        return 1, node_graph, samples, (total_num - rem_nodes) / total_num
     # using an integer for sim threhsold avoids lots of floating drama!
     if sims:
         sim_upper = sims[1]
