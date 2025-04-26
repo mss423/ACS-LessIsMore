@@ -39,7 +39,6 @@ def run_bert_train(data_train, data_test, num_labels, output_dir, epochs=3, seed
 
     args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True, 
         manual_seed=seed,
-        overwrite_output_dir=True,
         reprocess_input_data=True,
         no_cache=True,
         evaluate_during_training=False
