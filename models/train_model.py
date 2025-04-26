@@ -40,10 +40,11 @@ def run_bert_train(data_train, data_test, num_labels, epochs=3, seed=0):
     args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True, 
         manual_seed=seed,
         no_save=True,
+        no_cache=True,
         use_early_stopping = True,
         early_stopping_delta = 0.01,
         early_stopping_patience = 5, #?
-        evaluate_during_training_steps = 1000 #?
+        evaluate_during_training_steps = 50 #?
     )
 
     model = ClassificationModel(
