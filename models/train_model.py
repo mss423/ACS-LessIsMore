@@ -42,9 +42,9 @@ def run_bert_train(data_train, data_test, num_labels, epochs=3, seed=0):
         no_save=True,
         no_cache=True,
         use_early_stopping = True,
-        early_stopping_delta = 0.01,
-        early_stopping_patience = 5, #?
-        evaluate_during_training_steps = 50 #?
+        save_eval_checkpoints = False,
+        save_model_every_epoch = False,
+        save_steps = -1
     )
 
     model = ClassificationModel(
