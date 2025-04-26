@@ -34,17 +34,21 @@ def train_on_data(data_train, data_test, num_labels, dataset, epochs=3, seed=0):
     else:
         raise ValueError('Invalid dataset name passed!')
 
-def run_bert_train(data_train, data_test, num_labels, epochs=3, seed=0):
+def run_bert_train(data_train, data_test, num_labels, output_dir, epochs=3, seed=0):
     # print(data_train.sample(10))
 
     args = ClassificationArgs(num_train_epochs=epochs, overwrite_output_dir=True, 
         manual_seed=seed,
-        no_save=True,
+        overwrite_output_dir=True,
+        reprocess_input_data=True,
         no_cache=True,
-        use_early_stopping = True,
-        save_eval_checkpoints = False,
-        save_model_every_epoch = False,
-        save_steps = -1
+        evaluate_during_training=False
+        # no_save=True,
+        # no_cache=True,
+        # use_early_stopping = True,
+        # save_eval_checkpoints = False,
+        # save_model_every_epoch = False,
+        # save_steps = -1
     )
 
     model = ClassificationModel(
