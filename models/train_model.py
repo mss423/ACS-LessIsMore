@@ -58,6 +58,8 @@ def run_bert_train(data_train, data_test, num_labels, output_dir, epochs=3, seed
 
     pred = model_outputs.argmax(-1).tolist()
     gold = data_test["label"].tolist()
+
+    del model
     return classification_report(gold, pred, output_dict=True, zero_division=0.0), accuracy_score(gold, pred)
 
 def run_ner_train(data_train, data_test, epochs=3, seed=0):
